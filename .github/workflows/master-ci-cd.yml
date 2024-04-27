@@ -1,0 +1,14 @@
+name: "Master CI/CD"
+run-name: "Master CI/CD runned by: ${{ github.actor}}"
+
+on:
+  push:
+    branches: 
+            - "main"
+
+jobs:
+    first-job:
+        runs-on: ubuntu-latest
+        steps:
+            - name: "Greeting"
+              run: echo "My name is ${{github.actor}}"            
