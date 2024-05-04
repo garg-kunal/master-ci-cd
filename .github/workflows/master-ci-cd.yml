@@ -25,6 +25,12 @@ jobs:
             
           - name: "Bye"
             run: echo "Bye"  
+    part-first-job:
+      runs-on: ubuntu-latest
+      needs: [first-job]
+      steps:
+          - name: "Greeting"
+            run: echo "My name is ${{github.actor}}"         
 
     second-job:
       runs-on: ubuntu-latest
@@ -49,14 +55,7 @@ jobs:
       needs: [first-job,second-job,third-job]
       steps:
           - name: "Greeting"
-            run: echo "My name is ${{github.actor}}"  
-
-    part-first-job:
-      runs-on: ubuntu-latest
-      needs: [first-job]
-      steps:
-          - name: "Greeting"
-            run: echo "My name is ${{github.actor}}"          
+            run: echo "My name is ${{github.actor}}"           
 
 
     last-job:
@@ -65,3 +64,10 @@ jobs:
       steps:
           - name: "Greeting"
             run: echo "My name is ${{github.actor}}"                   
+
+    very-last-job:
+      runs-on: ubuntu-latest
+      needs: [part-second-job,first-job,second-job,third-job]
+      steps:
+          - name: "Greeting"
+            run: echo "My name is ${{github.actor}}"                           
