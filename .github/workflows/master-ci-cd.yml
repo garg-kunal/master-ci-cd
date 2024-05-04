@@ -7,7 +7,17 @@ on:
             - "main"
 
 jobs:
+    very-first-job:
+      runs-on: ubuntu-latest
+      steps:
+          - name: "Greeting"
+            run: echo "My name is ${{github.actor}}" 
+            
+          - name: "Bye"
+            run: echo "Bye"  
+
     first-job:
+      needs: [very-first-job]
       runs-on: ubuntu-latest
       steps:
           - name: "Greeting"
@@ -40,3 +50,18 @@ jobs:
       steps:
           - name: "Greeting"
             run: echo "My name is ${{github.actor}}"  
+
+    part-first-job:
+      runs-on: ubuntu-latest
+      needs: [first-job]
+      steps:
+          - name: "Greeting"
+            run: echo "My name is ${{github.actor}}"          
+
+
+    last-job:
+      runs-on: ubuntu-latest
+      needs: [part-second-job]
+      steps:
+          - name: "Greeting"
+            run: echo "My name is ${{github.actor}}"                   
