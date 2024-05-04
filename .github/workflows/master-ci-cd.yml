@@ -12,3 +12,15 @@ jobs:
         steps:
             - name: "Greeting"
               run: echo "My name is ${{github.actor}}"            
+    
+    second-job:
+      runs-on: ubuntu-latest
+      steps:
+          - name: "Greeting"
+            run: echo "My name is ${{github.actor}}"    
+                      
+    third-job:
+      runs-on: ubuntu-latest
+      steps:
+          - name: "Greeting"
+            run: echo "My name is ${{github.actor}}"            
