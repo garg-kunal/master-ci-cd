@@ -26,6 +26,8 @@ on:
         description: "Test scenario tags"
         required: false
         type: boolean
+  issue_comment:
+    types: [created]      
 
 jobs:
   first-job:
@@ -36,3 +38,12 @@ jobs:
 
       - name: Values
         run: echo "${{inputs.branch}} ${{ inputs.logLevel }} ${{inputs.tags}}"
+  pr_commented:
+    name: PR comment
+    if: ${{ github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo A comment on PR $NUMBER
+        env:
+          NUMBER: ${{ github.event.issue.number }}
