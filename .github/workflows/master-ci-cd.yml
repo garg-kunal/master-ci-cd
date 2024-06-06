@@ -2,8 +2,8 @@ name: "Master CI/CD"
 run-name: "Master CI/CD runned by: ${{ github.actor}}"
 
 on:
-  schedule:
-    - cron: "*/10 * * * *"
+  # schedule:
+  #   - cron: "*/10 * * * *"
   push:
     branches:
       - "main"
@@ -37,22 +37,30 @@ jobs:
     steps:
       - name: First Step
         run: echo "Runned by ${{github.actor}}"
-
-      - name: Values
-        run: echo "${{inputs.branch}} ${{ inputs.logLevel }} ${{inputs.tags}}"  
       
-  pr_commented:
-    name: PR comment
-    if: ${{ github.event.issue.pull_request }}
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo A comment on PR $NUMBER
-        env:
-          NUMBER: ${{ github.event.issue.number }}
+      - name: List repo files
+        run: ls    
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: 'main'
+          
+      - name: List repo files
+        run: ls    
+      
+  # pr_commented:
+  #   name: PR comment
+  #   if: ${{ github.event.issue.pull_request }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: |
+  #         echo A comment on PR $NUMBER
+  #       env:
+  #         NUMBER: ${{ github.event.issue.number }}
   
-  second-workflow:
-    uses: ./.github/workflows/master-ci-cd-second.yml
-    with:
-      branch: 'main'
-      logLevel: 'error'          
+  # second-workflow:
+  #   uses: ./.github/workflows/master-ci-cd-second.yml
+  #   with:
+  #     branch: 'main'
+  #     logLevel: 'error'          
