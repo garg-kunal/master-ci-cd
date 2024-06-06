@@ -1,0 +1,25 @@
+name: "Master CI/CD Second"
+run-name: "Master CI/CD Second runned by: ${{ github.actor}}"
+
+on:
+ workflow_call:
+    inputs:
+        branch:
+            type: string
+            default: 'main'
+            description: 'Branch Name'
+        logLevel:
+            type: string
+            description: "Log Level"        
+
+
+jobs:
+  first-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: First Step
+        run: echo "Runned by ${{github.actor}}"
+
+      - name: Values
+        run: echo "${{inputs.branch}} ${{ inputs.logLevel }}"
+ 
