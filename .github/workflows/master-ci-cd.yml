@@ -45,9 +45,6 @@ jobs:
         with:
           node-version: 18.16.0
     
-      - name: Install Dependencies
-        run: npm install    
-        
       - name: Run Test
         run: npm run test
 
