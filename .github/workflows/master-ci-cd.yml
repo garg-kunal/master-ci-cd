@@ -29,28 +29,51 @@ on:
         required: false
         type: boolean
   issue_comment:
-    types: [created]      
+    types: [created]
 
 jobs:
-  first-job:
+  build-prep-job:
     runs-on: ubuntu-latest
     steps:
-      - name: First Step
-        run: echo "Runned by ${{github.actor}}"  
-
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          ref: 'main'
+          ref: "main"
 
       - name: Use Node.js 18
         uses: actions/setup-node@v4
         with:
-            node-version: 18.16.0
-      
-      - name: Install Dependencies   
-        run: npm install   
-          
+          node-version: 18.16.0
+    
+      - name: Install Dependencies
+        run: npm install    
+        
+      - name: Run Test
+        run: npm run test
+
+      - name: Run Lint
+        run: npm run lint
+
+  build-job:
+    needs: ["build-prep-job"]
+    runs-on: ubuntu-latest
+    steps:
+      - name: First Step
+        run: echo "Runned by ${{github.actor}}"
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: "main"
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.16.0
+
+      - name: Install Dependencies
+        run: npm install
+
       - name: Build App
         run: npm run build
 
@@ -63,9 +86,9 @@ jobs:
   #         echo A comment on PR $NUMBER
   #       env:
   #         NUMBER: ${{ github.event.issue.number }}
-  
+
   # second-workflow:
   #   uses: ./.github/workflows/master-ci-cd-second.yml
   #   with:
   #     branch: 'main'
-  #     logLevel: 'error'          
+  #     logLevel: 'error'
