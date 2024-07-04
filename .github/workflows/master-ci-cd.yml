@@ -44,7 +44,23 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18.16.0
-    
+
+      - name: Cache packages
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: "node_modules"
+          key: my-cache-${{ hashFiles('**/package.json')}}
+          restore-keys: my-cache-${{ hashFiles('**/package.json')}}
+
+      - name: Skip Dependencies Installed
+        if: steps.cache.outputs.cache-hit =='true'
+        run: echo "Cache found"
+
+      - name: Install Dependencies (Clean Install)
+        if: steps.cache.outputs.cache-hit !='true'
+        run: npm install
+
       - name: Run Test
         run: npm run test
 
@@ -68,7 +84,20 @@ jobs:
         with:
           node-version: 18.16.0
 
-      - name: Install Dependencies
+      - name: Cache packages
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: "node_modules"
+          key: my-cache-${{ hashFiles('**/package.json')}}
+          restore-keys: my-cache-${{ hashFiles('**/package.json')}}
+  
+      - name: Skip Dependencies Installed
+        if: steps.cache.outputs.cache-hit =='true'
+        run: echo "Cache found"
+  
+      - name: Install Dependencies (Clean Install)
+        if: steps.cache.outputs.cache-hit !='true'
         run: npm install
 
       - name: Build App
