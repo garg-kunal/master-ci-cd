@@ -1,0 +1,41 @@
+name: "Install Packages"
+description: "This will install packages if not found in cache"
+
+inputs:
+  key:
+    required: true
+    description: "Key where cache should be saved"
+  restore-key:
+    required: true
+    description: "Key from cache should be restored"
+  path:
+    required: true
+    description: "What needs to be cached"
+outputs:
+  cache_found:
+    description: "Is cache restored"
+    value: ${{ steps.cache-output.outputs.cache_found }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Cache packages
+      id: cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ inputs.path }}
+        key: ${{ inputs.key }}
+        restore-keys: ${{ inputs.restore-key }}
+
+    - name: Skip Dependencies Installed
+      shell: bash
+      id: cache-output
+      if: steps.cache.outputs.cache-hit =='true'
+      run: |
+        echo "Cache found"
+        echo "cache_found=$steps.cache.outputs.cache-hit" >> $GITHUB_OUTPUT
+
+    - name: Install Dependencies (Clean Install)
+      shell: bash
+      if: steps.cache.outputs.cache-hit !='true'
+      run: npm install

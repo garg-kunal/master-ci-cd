@@ -45,21 +45,12 @@ jobs:
         with:
           node-version: 18.16.0
 
-      - name: Cache packages
-        id: cache
-        uses: actions/cache@v4
+      - name: Install Packages
+        uses: ./.github/actions/install-packages
         with:
-          path: "node_modules"
           key: my-cache-${{ hashFiles('**/package.json')}}
-          restore-keys: my-cache-${{ hashFiles('**/package.json')}}
-
-      - name: Skip Dependencies Installed
-        if: steps.cache.outputs.cache-hit =='true'
-        run: echo "Cache found"
-
-      - name: Install Dependencies (Clean Install)
-        if: steps.cache.outputs.cache-hit !='true'
-        run: npm install
+          restore-key: my-cache-${{ hashFiles('**/package.json')}}
+          path: "node_modules"
 
       - name: Run Test
         run: npm run test
@@ -84,21 +75,12 @@ jobs:
         with:
           node-version: 18.16.0
 
-      - name: Cache packages
-        id: cache
-        uses: actions/cache@v4
+      - name: Install Packages
+        uses: ./.github/actions/install-packages
         with:
-          path: "node_modules"
           key: my-cache-${{ hashFiles('**/package.json')}}
-          restore-keys: my-cache-${{ hashFiles('**/package.json')}}
-  
-      - name: Skip Dependencies Installed
-        if: steps.cache.outputs.cache-hit =='true'
-        run: echo "Cache found"
-  
-      - name: Install Dependencies (Clean Install)
-        if: steps.cache.outputs.cache-hit !='true'
-        run: npm install
+          restore-key: my-cache-${{ hashFiles('**/package.json')}}
+          path: "node_modules"
 
       - name: Build App
         run: npm run build
