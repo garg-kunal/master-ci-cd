@@ -1,0 +1,30 @@
+name: "Setup"
+description: "This will checkout the code and setup nodejs and install packages"
+
+inputs:
+ branch: 
+  required: true
+  description: 'Branch need to be checkout'
+outputs:
+  cache_found:
+    description: "Is cache restored"
+    value: ${{ steps.packages.outputs.cache_found }}
+
+
+runs:
+  using: "composite"
+  steps:
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.16.0
+      
+      - name: Use Package Action
+        id: packages
+        uses: ./.github/actions/install-packages
+        with:
+          key: my-cache-${{ hashFiles('**/package.json')}}
+          restore-key: my-cache-${{ hashFiles('**/package.json')}}
+          path: "node_modules"
+
+    

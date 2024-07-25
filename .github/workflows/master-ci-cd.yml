@@ -38,19 +38,16 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          ref: "main"
-
-      - name: Use Node.js 18
-        uses: actions/setup-node@v4
+         ref: ${{ inputs.branch }}
+         
+      - name: Setup
+        id: setup
+        uses: ./.github/actions/setup
         with:
-          node-version: 18.16.0
-
-      - name: Install Packages
-        uses: ./.github/actions/install-packages
-        with:
-          key: my-cache-${{ hashFiles('**/package.json')}}
-          restore-key: my-cache-${{ hashFiles('**/package.json')}}
-          path: "node_modules"
+         branch: 'main'
+       
+      - name: Output 
+        run: echo ${{ steps.setup.outputs.cache-found }}   
 
       - name: Run Test
         run: npm run test
@@ -62,25 +59,15 @@ jobs:
     needs: ["build-prep-job"]
     runs-on: ubuntu-latest
     steps:
-      - name: First Step
-        run: echo "Runned by ${{github.actor}}"
-
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          ref: "main"
+         ref: ${{ inputs.branch }}
 
-      - name: Use Node.js 18
-        uses: actions/setup-node@v4
+      - name: Setup
+        uses: ./.github/actions/setup
         with:
-          node-version: 18.16.0
-
-      - name: Install Packages
-        uses: ./.github/actions/install-packages
-        with:
-          key: my-cache-${{ hashFiles('**/package.json')}}
-          restore-key: my-cache-${{ hashFiles('**/package.json')}}
-          path: "node_modules"
+         branch: 'main'
 
       - name: Build App
         run: npm run build
