@@ -31,6 +31,10 @@ on:
   issue_comment:
     types: [created]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-prep-job:
     runs-on: ubuntu-latest
