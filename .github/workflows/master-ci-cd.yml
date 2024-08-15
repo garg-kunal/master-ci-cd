@@ -76,6 +76,19 @@ jobs:
       - name: Build App
         run: npm run build
 
+  matrix-jobs:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-20.04]
+        version: [10, 12, 14]
+    steps:
+        - name: Echo OS
+          run: echo ${{ matrix.os }} 
+
+        - name: Echo Version
+          run: echo ${{ matrix.version }}    
+
   # pr_commented:
   #   name: PR comment
   #   if: ${{ github.event.issue.pull_request }}
