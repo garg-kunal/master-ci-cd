@@ -79,6 +79,7 @@ jobs:
   matrix-jobs:
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 2
       matrix:
         os: [ubuntu-22.04, ubuntu-20.04]
         version: [10, 12, 14]
