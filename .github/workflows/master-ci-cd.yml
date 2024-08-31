@@ -59,6 +59,11 @@ jobs:
       - name: Run Lint
         run: npm run lint
 
+      - name: Secret Value
+        run: node ./env.js
+        env:
+          LESSON_NAME:  ${{secrets.LESSON_NAME}} 
+
   build-job:
     needs: ["build-prep-job"]
     runs-on: ubuntu-latest
@@ -76,19 +81,19 @@ jobs:
       - name: Build App
         run: npm run build
 
-  matrix-jobs:
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 2
-      matrix:
-        os: [ubuntu-22.04, ubuntu-20.04]
-        version: [10, 12, 14]
-    steps:
-        - name: Echo OS
-          run: echo ${{ matrix.os }} 
+  # matrix-jobs:
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     max-parallel: 2
+  #     matrix:
+  #       os: [ubuntu-22.04, ubuntu-20.04]
+  #       version: [10, 12, 14]
+  #   steps:
+  #       - name: Echo OS
+  #         run: echo ${{ matrix.os }} 
 
-        - name: Echo Version
-          run: echo ${{ matrix.version }}    
+  #       - name: Echo Version
+  #         run: echo ${{ matrix.version }}    
 
   # pr_commented:
   #   name: PR comment
